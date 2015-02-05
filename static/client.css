@@ -1,0 +1,132 @@
+body {
+    background:#13D4ED;
+}
+#container {
+	margin-top:100px;
+	margin-left:auto;
+    margin-right:auto;
+    width:600px;
+    height:500px;
+    }
+
+#logo{
+    width:340px;
+    height:400px;
+    float:left;
+    background-image:url(img/wimage.png);
+    }
+#loginsignup{
+    width:250px;
+    height:400px;
+    float:right;
+}
+#login{
+    width:250px;
+    height:100px;
+    background:White;
+    
+}
+#signup{
+    width:250px;
+    height:290px;
+    margin-top:10px;
+    background:White;
+}
+#loginform{
+	padding-top:20px;
+	padding-left:10px;
+	padding-right:10px;
+}
+.formbutton{
+	float:right;
+}
+#signupform{
+	padding-top:1px;
+	padding-left:10px;
+	padding-right:10px;
+}
+.line {
+	clear:both;
+}
+.formfield{
+	width:140px;
+	float:right;
+}
+label {
+	font-size:13;
+	display:inline-block;
+}
+
+#menu{
+	width:600px;
+	height:45px;
+	background:#FFC0CB;
+}
+
+#tabcontent{
+	padding-top:1px;
+	width:600px;
+	height:455px;
+	background:white;
+}
+
+#home{
+	display:block;
+}
+#personalinfo{
+	padding-left:20px;
+}
+
+#wall{
+	padding-left:20px;
+	width:300px;
+}
+
+#messages{
+    width: 300px;
+    height: 175px;
+    overflow-y:scroll;
+}
+#message{
+	float:left;
+	width:300px;
+	resize:none;
+}
+
+#postbutton{
+	float:right;
+
+}
+#browse{
+	display:none;
+
+}
+#serachBrowserForm{
+	padding-left:20px;
+	width:300px;
+
+}
+#messagesbrowser{
+    width: 300px;
+    height: 93px;
+    overflow-y:scroll;
+}
+#account{
+	display:none;
+}
+
+#changepass{
+	float:left;
+	padding-left:20px;
+	width:250px;
+}
+#logout{
+	padding-top:30px;
+	padding-left:20px;
+}
+
+.tabs{
+	float:left;
+	padding-right:40px;
+}
+	

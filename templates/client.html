@@ -1,0 +1,119 @@
+<html>
+  <head>
+    <link href="./static/client.css" type="text/css" rel="stylesheet">
+    <script src="./static/js/client.js" type="text/javascript"></script>
+    <script type="text/view" id="welcomeview">
+		<div id="container">
+			<div id="logo">
+			</div>
+			<div id="loginsignup">
+				<div id="login">
+					<form id="loginform" action="/signin"><!--onSubmit="loginUser(loginform);return false;">-->
+						<div class="line"><label>Email: </label><input type="email" class="formfield" name="email" required></div>
+						<div class="line"><label>Password: </label><input type="password" class="formfield" name="pass" pattern=".{6,}" required></div>
+					<div class="line"><input type="submit" value="Sign in" class="formbutton"></div>
+					<!--	<div class="line"><input type="image" value="Sign- in" class="formbutton" onClick="if( validate( this.form ) ) this.form.submit( );"></div>-->
+					</form>
+				</div>
+				<div id="signup">
+					<form id="signupform" action="/signup">   <!--onSubmit="return registerUser(signupform);">-->
+						<div class="line"><h4><CENTER>Sign up here!</CENTER></h4></div>
+						<div class="line"><label>Email: </label><input type="email" class="formfield" name="email" id="signupemail" required></div>
+						<div class="line"><label>Pass: </label><input type="password" class="formfield" name="pass" id="regpass1"
+						pattern=".{6,}" required></div>
+						<div class="line"><label>Re-Pass: </label><input type="password" class="formfield" name="repass" id="regpass2"
+						pattern=".{6,}" required>
+						</div>
+						<div class="line"><label>First name: </label><input type="text" name="firstName" class="formfield" required></div>
+						<div class="line"><label>Familyname: </label><input type="text" name="familyName" class="formfield" required></div>
+						<div class="line"><label>Gender: </label>
+							<select class="formfield" name="gender" required>
+								<option value="Male">Male</option>
+								<option value="Female">Female</option>
+							</select>
+						</div>
+						<div class="line"><label>City: </label><input type="text" name="city" class="formfield" required></div>
+						<div class="line"><label>Country: </label><input type="text" class="formfield" name="country" required></div>
+						<div class="line"><input type="submit" value="Sign up" class="formbutton"/></div>
+					</form>
+				</div>
+			</div>
+		</script>
+		
+	<script type="text/view" id="profileview">
+	<div id="container">
+		<div id="menu">
+			<ul class="tabs" >
+				<li class="tabs" onClick="tabSel(0)">Home</li>
+				<li class="tabs" onClick="tabSel(1)">Browse</li>
+				<li class="tabs" onClick="tabSel(2)">Account</li>
+			</ul>
+		</div>
+		<div id="tabcontent">
+			<div id="home">
+				<div id="personalinfo">
+					<h4>Personal information</h4>
+					<div class="line"><label><b>Email:&nbsp</b></label><label id="pemail"></label></div>
+					<div class="line"><label><b>Firstname:&nbsp</b></label><label id="pfirstname"></label></div>
+					<div class="line"><label><b>Familyname:&nbsp</b></label><label id="pfamilyname"></label></div>
+					<div class="line"><label><b>Gender:&nbsp</b></label><label id="pgender"></label></div>
+					<div class="line"><label><b>City:&nbsp</b></label><label id="pcity"></label></div>
+					<div class="line"><label><b>Country:&nbsp</b></label><label id="pcountry"></label></div>
+				</div>
+				<div id="wall">
+					<h4>Wall</h4>
+					<div id="messages"></div>
+					<form id="postmessage" onSubmit="postMessage(postmessage);return false;">
+						<textarea id="message"></textarea>
+						<input type="button" value="Refresh" onClick="reloadWall();">
+						<input type="submit" value="Post" id="postbutton"> 
+					</form>
+				</div>
+			</div>
+			<div id="browse">
+				<form id="serachBrowserForm" onSubmit="serachBrowser(serachBrowserForm);return false;">
+					<h4> Search </h4>
+					<div class="line"><label><b>Email:&nbsp </b></label><input type="email" class="formfield" name="email" id="browserSearch" required></div>
+					<div class="line"><input type="submit" value="Search" class="formbutton"></div>
+				</form>
+				<div id="personalinfo">
+					<h4>Personal information</h4>
+					<div class="line"><label><b>Email:&nbsp</b></label><label id="bemail"></label></div>
+					<div class="line"><label><b>Firstname:&nbsp</b></label><label id="bfirstname"></label></div>
+					<div class="line"><label><b>Familyname:&nbsp</b></label><label id="bfamilyname"></label></div>
+					<div class="line"><label><b>Gender:&nbsp</b></label><label id="bgender"></label></div>
+					<div class="line"><label><b>City:&nbsp</b></label><label id="bcity"></label></div>
+					<div class="line"><label><b>Country:&nbsp</b></label><label id="bcountry"></label></div>
+				</div>
+				<div id="wall">
+					<h4>Wall</h4>
+					<div id="messagesbrowser"></div>
+					<form id="messageBrowserForm" onSubmit="postMessagebrowser(messageBrowserForm);return false;">
+						<textarea id="message"></textarea>
+						<input type="button" value="Refresh" onClick="reloadWall();">
+						<input type="submit" value="Post" id="postbutton"> 
+					</form>
+				</div>
+			</div>
+			<div id="account">
+				<form id="changepass" onSubmit="return changePass();">
+					<div class="line"><h4><CENTER>Change password</CENTER></h4></div>
+						<div class="line"><label>Old pass: </label><input type="password" class="formfield" name="oldpass" id="oldpass" pattern=".{6,}" required></div>
+						<div class="line"><label>New pass: </label><input type="password" class="formfield" name="newpass" id="newpass"
+						pattern=".{6,}" required></div>
+						<div class="line"><label>Re-Pass: </label><input type="password" class="formfield" name="newrepass" id="newrepass"
+						pattern=".{6,}" required></div>
+						<div class="line"><input type="submit" value="Change" class="formbutton"></div>
+				</form>
+				<div id="logout">
+					<div class="line"><label>Do you want to sign out?&nbsp</label><button type="button" onclick="signOut();">Sign out</button></div>
+				</div>
+			</div>			
+		</div>
+	</div>
+	</script>
+  </head>
+  <body onload="viewController();">
+	<div id="view"></div>
+  </body>
+</html>
