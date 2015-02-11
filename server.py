@@ -1,27 +1,24 @@
 __author__ = 'KarlFredrik'
 
-from flask import Flask, request, render_template
-import string
 import random
+import string
 import json
 import hashlib
-
+from flask import request, jsonify, render_template, Flask
 import database_helper
-
-
-
-
 app = Flask(__name__)
+db = 'database_helper(app)'
 
 loggedInUsers = {}
 
 
 @app.route('/')
-def home():
-    database_helper.get_db()
-    database_helper.init_db(app)
-    return render_template('client.html')
-    #return 'This is a front page, looking beautiful'
+def hello_world():
+    return 'Hello World!'
+#def home():
+#   database_helper.get_db()
+#  database_helper.init_db(app)
+#    return render_template('client.html')
 
 
 @app.route('/signin', methods=["POST"])
@@ -31,13 +28,13 @@ def signIn():
     password = request.form['password']
     user = database_helper.getUser(email)
     if user == None:
-        return 'no such user'
+        return 'User does not exist!'
     elif verifyPass(password, user[1]):
         token = ''.join([random.choice(string.ascii_letters + string.digits) for n in xrange(32)])
         loggedInUsers[token] = email
         return json.dumps({'success': True, 'message': 'you logged in', 'data': token})
     else:
-        return 'wrong password'
+        return 'Wrong Password'
 
 
 @app.route('/users')
@@ -48,36 +45,26 @@ def showUsers():
         print row
     return 'done'
 
-@app.route('/addtestuser')
-def addTestUser():
-    database_helper.testUserAdd()
-    return render_template('client.html')
 
-
-@app.route('/signup', methods=["POST", "GET"])
+@app.route('/signup', methods=["POST"])
+# Registers user in database
 def signUp():
-    if (request == "POST"):
-        # Registers user in database
-        email = request.form['email']
-        password = request.form['password']
-        firstname = request.form['firstname']
-        familyname = request.form['familyname']
-        gender = request.form['gender']
-        city = request.form['city']
-        country = request.form['country']
-        if email == None:
-            return 'you need to fill in your info'
-        exists = database_helper.existsUser(email)
-        #return answer
-        if exists == False:
-            hashPass = hashPassword(password)
-            database_helper.addUser(email, hashPass, firstname, familyname, gender, city, country)
-            return 'you just signed up'
-        else:
-            return 'user already exists'
-        return render_template('client.html')
+    email = request.form['email']
+    password = request.form['password']
+    firstname = request.form['firstname']
+    familyname = request.form['familyname']
+    gender = request.form['gender']
+    city = request.form['city']
+    country = request.form['country']
+    if db.user_xist(email):
+        return jsonify(
+            sucess=False,
+            message="User already exists!")
 
-    return render_template('client.html')
+    db.add_user(email, password, firstname, familyname, gender, city, country)
+    return jsonify(
+        success=True,
+        message="User successfully created!")
 
 
 @app.route('/signout', methods=["POST"])
@@ -87,7 +74,7 @@ def signOut():
     try:
         if loggedInUsers[token] != None:
             del loggedInUsers[token]
-            return json.dumps({'success': True, 'message': 'you signed out'})
+            return json.dumps({'success': True, 'message': "User signed out!"})
     except Exception, e:
         return json.dumps({'success': False, 'message': 'you are not signed in'})
 
