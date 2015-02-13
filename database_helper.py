@@ -43,37 +43,44 @@ def add_user(email, password, firstname, familyname, gender, city, country):
 
 def get_user(email):
     cur = get_db().cursor()
-    query = 'SELECT * FROM USER AS U WHERE U.email = ?'
+    query = 'SELECT * FROM users AS U WHERE U.email = ?'
     cur.execute(query, [email])
-    userInfo = cur.fetchone()
-    return userInfo
+    userinfo = cur.fetchone()
+    return userinfo
+
+def get_password(email):
+    cur = get_db().cursor()
+    query = 'SELECT * FROM users AS U WHERE U.password = ?'
+    cur.execute(query, [email])
+    userpassword = cur.fetchone()
+    return userpassword
 
 
 def user_exist(email):
     cur = get_db().cursor()
-    cur.execute('SELECT * FROM user WHERE user.EMAIL = ?', [email])
+    cur.execute('SELECT * FROM users WHERE users.email = ?', [email])
     result = cur.fetchone()
     print result
     return (result != None)
 
 
-def add_message(toEmail, fromEmail, message):
+def add_message(from_email, to_email, message):
     cur = get_db().cursor()
-    query = 'INSERT INTO MESSAGE(toemail, fromemail, message) VALUES(?, ?, ?);'
-    cur.execute(query, [toEmail, fromEmail, message])
+    query = 'INSERT INTO messages(from_email, to_email, message) VALUES(?, ?, ?);'
+    cur.execute(query, [from_email, to_email, message])
     get_db().commit()
 
 
 def change_password(email, newPass):
     cur = get_db().cursor()
-    query = 'UPDATE USER SET password = ? WHERE USER.EMAIL = ?;'
+    query = 'UPDATE users SET password = ? WHERE users.email = ?;'
     cur.execute(query, [newPass, email])
     get_db().commit()
 
 
 def get_messages(email):
     cur = get_db().cursor()
-    query = 'SELECT * FROM MESSAGE WHERE MESSAGE.toemail=?;'
+    query = 'SELECT * FROM messages WHERE messages.to_email=?;'
     cur.execute(query, [email])
     messages = cur.fetchall()
     return messages
