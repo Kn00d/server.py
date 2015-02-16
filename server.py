@@ -25,8 +25,8 @@ def hello_world():
 @app.route('/sign_in', methods=["POST"])
 def signIn():
     # Signs in the user and gives them a string containing random generated token
-    email = request.form['email']
-    password = request.form['password']
+    email = request.form.get('email')
+    password = request.form.get('password')
     user = database_helper.get_user(email)
     print(user[1])
     print(user)
@@ -94,17 +94,16 @@ def changePassword():
         return json.dumps({'success': False, 'message': 'you are not signed in'})
     info = database_helper.get_user(email)
     if verifyPass(old_pass, info[1]):
-        hash_pass = hashPassword(new_pass)
-        database_helper.change_password(email, hash_pass)
+        database_helper.change_password(email, new_pass)
         return json.dumps({'success': True, 'message': 'password changed'})
     else:
         return json.dumps({'success': False, 'message': 'wrong password'})
 
 
-@app.route('/get_user_data')
+@app.route('/get_user_data_by_token', methods=["POST"])
 def getUserDataByToken():
     # Retrieves userdata from token
-    token = request.args.get('token')
+    token = request.form.get('token')
     try:
         email = logged_in_user[token]
     except Exception, e:
@@ -113,11 +112,11 @@ def getUserDataByToken():
     return json.dumps({'user: ': info})
 
 
-@app.route('/get_user_data_email')
+@app.route('/get_user_data_by_email', methods=["POST"])
 def getUserDataByEmail():
     # Returns a user object
-    token = request.args.get('token')
-    email = request.args.get('email')
+    token = request.form.get('token')
+    email = request.form.get('email')
     try:
         loggedInUser = logged_in_user[token]
     except Exception, e:
@@ -129,10 +128,11 @@ def getUserDataByEmail():
         return 'no such user'
 
 
-@app.route('/get_message_token')
+@app.route('/get_user_messages_by_token', methods=["POST"])
 def getUserMessagesByToken():
     # Returns an array containing all messages sent to user
-    token = request.args.get('token')
+    token = request.form.get('token')
+
     try:
         email = logged_in_user[token]
     except Exception, e:
@@ -141,13 +141,13 @@ def getUserMessagesByToken():
     return json.dumps({'messages': messages})
 
 
-@app.route('/get_user_messages_by_email')
+@app.route('/get_user_messages_by_email', methods=["POST"])
 def getUserMessagesByEmail():
     # Same as above for the email-user
-    token = request.args.get('token')
-    email = request.args.get('email')
+    token = request.form.get('token')
+    email = request.form.get('email')
     try:
-        logged_in_user = logged_in_user[token]
+        lol = logged_in_user[token]
     except Exception, e:
         return 'you are not signed in'
     if database_helper.user_exist(email):
@@ -160,15 +160,16 @@ def getUserMessagesByEmail():
 @app.route('/post_message', methods=["POST"])
 def postMessage():
     # Post a message
-    token = request.form['token']
-    message = request.form['message']
-    to_email = request.form['email']
+    token = request.form.get('token')
+    to_email = request.form.get('email')
+    message = request.form.get('message')
+    print(token, to_email, message)
     try:
         from_email = logged_in_user[token]
     except Exception, e:
         return json.dumps({'success': False, 'message': 'you are not signed in'})
     if database_helper.user_exist(to_email):
-        database_helper.add_message(to_email, from_email, message)
+        database_helper.add_message(from_email, to_email, message)
         return json.dumps({'success': True, 'message': 'message posted'})
     else:
         return json.dumps({'success': False, 'message': 'no such user'})

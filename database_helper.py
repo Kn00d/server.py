@@ -45,15 +45,15 @@ def get_user(email):
     cur = get_db().cursor()
     query = 'SELECT * FROM users AS U WHERE U.email = ?'
     cur.execute(query, [email])
-    userinfo = cur.fetchone()
-    return userinfo
+    user_info = cur.fetchone()
+    return user_info
 
 def get_password(email):
     cur = get_db().cursor()
     query = 'SELECT * FROM users AS U WHERE U.password = ?'
     cur.execute(query, [email])
-    userpassword = cur.fetchone()
-    return userpassword
+    user_password = cur.fetchone()
+    return user_password
 
 
 def user_exist(email):
@@ -66,7 +66,7 @@ def user_exist(email):
 
 def add_message(from_email, to_email, message):
     cur = get_db().cursor()
-    query = 'INSERT INTO messages(from_email, to_email, message) VALUES(?, ?, ?);'
+    query = 'INSERT INTO messages (from_email, to_email, message) VALUES(?, ?, ?);'
     cur.execute(query, [from_email, to_email, message])
     get_db().commit()
 
