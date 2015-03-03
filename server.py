@@ -3,7 +3,6 @@ __author__ = 'KarlFredrik'
 import random
 import string
 import json
-import hashlib
 from flask import request, jsonify, render_template, Flask
 import database_helper
 app = Flask(__name__)
@@ -100,10 +99,10 @@ def changePassword():
         return json.dumps({'success': False, 'message': 'wrong password'})
 
 
-@app.route('/get_user_data_by_token', methods=["POST"])
+@app.route('/get_user_data_by_token', methods=["GET"])
 def getUserDataByToken():
     # Retrieves userdata from token
-    token = request.form.get('token')
+    token = request.args.get('token')
     try:
         email = logged_in_user[token]
     except Exception, e:
@@ -112,11 +111,13 @@ def getUserDataByToken():
     return json.dumps({'user: ': info})
 
 
-@app.route('/get_user_data_by_email', methods=["POST"])
+
+
+@app.route('/get_user_data_by_email', methods=["GET"])
 def getUserDataByEmail():
     # Returns a user object
-    token = request.form.get('token')
-    email = request.form.get('email')
+    token = request.args.get('token')
+    email = request.args.get('email')
     try:
         loggedInUser = logged_in_user[token]
     except Exception, e:
@@ -128,10 +129,10 @@ def getUserDataByEmail():
         return 'no such user'
 
 
-@app.route('/get_user_messages_by_token', methods=["POST"])
+@app.route('/get_user_messages_by_token', methods=["GET"])
 def getUserMessagesByToken():
     # Returns an array containing all messages sent to user
-    token = request.form.get('token')
+    token = request.args.get('token')
 
     try:
         email = logged_in_user[token]
@@ -141,13 +142,13 @@ def getUserMessagesByToken():
     return json.dumps({'messages': messages})
 
 
-@app.route('/get_user_messages_by_email', methods=["POST"])
+@app.route('/get_user_messages_by_email', methods=["GET"])
 def getUserMessagesByEmail():
     # Same as above for the email-user
-    token = request.form.get('token')
-    email = request.form.get('email')
+    token = request.args.get('token')
+    email = request.args.get('email')
     try:
-        lol = logged_in_user[token]
+        loggedinuser = logged_in_user[token]
     except Exception, e:
         return 'you are not signed in'
     if database_helper.user_exist(email):
@@ -175,14 +176,8 @@ def postMessage():
         return json.dumps({'success': False, 'message': 'no such user'})
 
 
-#def hashPassword(password):
-#   hashedPass = hashlib.sha512(password).hexdigest()
-#    return hashedPass
-
-
-
-def verifyPass(password, hashedpass):
-    return password == hashedpass
+def verifyPass(password1 , password2):
+    return password1 == password2
 
 if __name__ == '__main__':
     app.run(debug=True)
